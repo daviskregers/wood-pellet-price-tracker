@@ -10,13 +10,14 @@ defmodule ApiWeb.PriceController do
 
     prices = Repo.all(from(
       p in Price,
+      where: p.date in fragment("(SELECT date FROM prices ORDER BY date DESC LIMIT 1)"),
       select: %{
         price: p.price,
         title: p.title,
         url: p.url,
         date: p.date
       }
-    ))
+   ))
 
     aggregate = Repo.all(from(
       p in Price,

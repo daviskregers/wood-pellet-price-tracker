@@ -44,6 +44,16 @@ services:
       - PGPASSWORD=postgres_password
       - PGPORT=5432
 
+  front:
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./front
+    ports:
+      - "3000:3000"
+    volumes:
+      - /app/node_modules
+      - ./front:/app
+
 volumes:
   db-data:
     driver: local
