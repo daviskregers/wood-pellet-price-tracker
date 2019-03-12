@@ -12,6 +12,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      api_url: 'http://localhost:4000',
       aggregations: [],
       prices: [],
     };
@@ -19,7 +20,7 @@ class App extends Component {
 
   componentDidMount() {
 
-    axios.get(`http://localhost:4000/api/prices`)
+    axios.get( this.state.api_url + `/api/prices`)
       .then(res => {
         const aggregations = res.data.data.aggregations;
         const prices = res.data.data.prices;
@@ -28,8 +29,6 @@ class App extends Component {
           aggregations: aggregations,
           prices: prices
         });
-
-        console.log(aggregations)
 
       })
   }
@@ -41,7 +40,7 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <h1>Wood pellet price tracker</h1>
           <p>
-            uses <a href="https://www.ss.com/lv/production-work/firewood/granules/" target="_blank">SS.com</a> adverts to track price changes.
+            uses <a href="https://www.ss.com/lv/production-work/firewood/granules/" target="_blank" rel="noopener noreferrer">SS.com</a> adverts to track price changes.
           </p>
         </header>
 
@@ -71,13 +70,13 @@ class App extends Component {
 
         <h3>Current listings</h3>
 
-        <Table>
+        <Table striped={true} bordered={true} hoverable={true}>
           <thead>
             <tr>
-              <th>date</th>
-              <th>price</th>
-              <th>title</th>
-              <th>url</th>
+              <th data-field="date">date</th>
+              <th data-field="price">price</th>
+              <th data-field="title">title</th>
+              <th data-field="url">url</th>
             </tr>
           </thead>
           <tbody>
@@ -88,7 +87,7 @@ class App extends Component {
                   <td>{data.date}</td>
                   <td>{data.price}</td>
                   <td>{data.title}</td>
-                  <td><a target="_blank" href={data.url}>View</a></td>
+                  <td><a target="_blank" rel="noopener noreferrer" href={data.url}>View</a></td>
                 </tr>
               );
             })}

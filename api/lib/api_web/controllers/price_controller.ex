@@ -16,7 +16,8 @@ defmodule ApiWeb.PriceController do
         title: p.title,
         url: p.url,
         date: p.date
-      }
+      },
+      order_by: [asc: p.price]
    ))
 
     aggregate = Repo.all(from(
