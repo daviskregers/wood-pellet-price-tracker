@@ -12,7 +12,9 @@ You can see it live at [https://pellets.deiveris.lv](https://pellets.deiveris.lv
 
 ## Todo:
 - [ ] add phoenix migrations
-- [ ] schedule worker
-- [ ] nginx proxy
-- [ ] travis deployment
-- [ ] add categories (6mm / 8mm)
+- [ ] schedule worker [https://github.com/dbader/schedule](https://github.com/dbader/schedule)
+- [ ] nginx proxy (front and api)
+- [ ] travis deployment do DigitalOcean
+- [ ] add categories (6mm / 8mm) (15kg / Big Bag)
+- [ ] frontend toggle categories
+- [ ] prices datatable
