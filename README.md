@@ -18,3 +18,5 @@ You can see it live at [https://pellets.deiveris.lv](https://pellets.deiveris.lv
 - [ ] add categories (6mm / 8mm) (15kg / Big Bag)
 - [ ] frontend toggle categories
 - [ ] prices datatable
+- [ ] split prices and averages endpoints
+- [ ] multiple averages in chart by category
