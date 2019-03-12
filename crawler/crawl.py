@@ -12,7 +12,7 @@ def create_tables(conn):
     try:
         cur = conn.cursor()
         cur.execute("""
-            CREATE TABLE prices (
+            CREATE TABLE IF NOT EXISTS prices (
                 id SERIAL PRIMARY KEY,
                 price  DECIMAL(11, 4) NOT NULL,
                 title VARCHAR(255) NOT NULL,
@@ -72,7 +72,7 @@ def crawl_page(url, urls_parsed = None):
             # pprint([item, title_column, price_column])
             continue
 
-        price = float(price.replace("€/t.", ""))
+        price = float(price.replace(",", "").replace(" ", "").replace("€/t.", ""))
 
         items.append({
             "title": title,

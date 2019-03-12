@@ -1,5 +1,6 @@
 version: '3'
 services: 
+
   database_server:
     restart: always
     image: 'postgres:9.6-alpine'
@@ -10,6 +11,7 @@ services:
       - ./postgres-data:/var/lib/postgresql/data
     ports:
       - "5433:5432"
+
   crawler:
     build:
       dockerfile: Dockerfile.dev
@@ -26,6 +28,22 @@ services:
       - PGDATABASE=postgres
       - PGPASSWORD=postgres_password
       - PGPORT=5432
+
+  api:
+    build:
+      dockerfile: Dockerfile
+      context: ./api
+    volumes:
+      - ./api:/app
+    ports:
+      - "4000:4000"
+    environment:
+      - PGUSER=postgres
+      - PGHOST=database_server
+      - PGDATABASE=postgres
+      - PGPASSWORD=postgres_password
+      - PGPORT=5432
+
 volumes:
   db-data:
     driver: local
