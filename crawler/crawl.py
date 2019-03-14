@@ -3,37 +3,9 @@ from pprint import pprint
 from os import environ
 import requests
 from bs4 import BeautifulSoup
+import schedule
 import time
 import datetime
-
-def create_tables(conn):
-    """ Create tables in PostgreSQL database """
-
-    try:
-        cur = conn.cursor()
-        cur.execute("""
-            CREATE TABLE IF NOT EXISTS prices (
-                id SERIAL PRIMARY KEY,
-                price  DECIMAL(11, 4) NOT NULL,
-                title VARCHAR(255) NOT NULL,
-                url VARCHAR(255) NOT NULL,
-                date timestamp NOT NULL
-            )
-        """)
-
-        print("Tables created")
-        conn.commit()
-        cur.close()
-    
-    except (Exception, psycopg2.DatabaseError) as error:
-        print(error)
-
-conn = psycopg2.connect(
-    host=environ.get("PGHOST"),
-    database=environ.get("PGDATABASE"), 
-    user=environ.get("PGUSER"), 
-    password=environ.get("PGPASSWORD")
-);
 
 domain = 'https://www.ss.com'
 
@@ -93,6 +65,15 @@ def crawl_page(url, urls_parsed = None):
 
 def crawl():
 
+    pprint("Starting crawler ...")
+
+    conn = psycopg2.connect(
+        host=environ.get("PGHOST"),
+        database=environ.get("PGDATABASE"), 
+        user=environ.get("PGUSER"), 
+        password=environ.get("PGPASSWORD")
+    );
+
     cur = conn.cursor()
     (items, urls_parsed) = crawl_page('https://www.ss.com/lv/production-work/firewood/granules/')
     pprint(items)
@@ -116,11 +97,15 @@ def crawl():
     conn.commit()
     cur.close()
 
-create_tables(conn)
-crawl()
+    if conn is not None:
+        conn.close()
+        print('Database connection closed.')
 
+def job():
+    crawl()
 
+schedule.every(1).hours.do(job)
 
-if conn is not None:
-    conn.close()
-    print('Database connection closed.')
+while True:
+    schedule.run_pending()
+    time.sleep(1)

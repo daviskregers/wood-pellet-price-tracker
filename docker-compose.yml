@@ -14,7 +14,7 @@ services:
 
   crawler:
     build:
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile
       context: ./crawler
     depends_on:
       - database_server
@@ -31,9 +31,12 @@ services:
 
   api:
     build:
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
       context: ./api
+    depends_on:
+      - database_server
     volumes:
+      - /app/assets/node_modules
       - ./api:/app
     ports:
       - "4000:4000"
@@ -55,6 +58,18 @@ services:
     volumes:
       - /app/node_modules
       - ./front:/app
+  
+  nginx:
+    restart: always
+    depends_on:
+      - database_server
+      - api
+      - front
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./nginx
+    ports:
+      - "3050:80"
 
 volumes:
   db-data:

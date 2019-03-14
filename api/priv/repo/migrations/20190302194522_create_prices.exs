@@ -7,7 +7,6 @@ defmodule Api.Repo.Migrations.CreatePrices do
       add :title, :string
       add :url, :string
       add :date, :naive_datetime
-
       timestamps()
     end
 

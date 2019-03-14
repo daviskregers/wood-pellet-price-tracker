@@ -1,0 +1,83 @@
+version: '3'
+services: 
+
+  pellets_prod_database_server:
+    restart: always
+    image: 'postgres:9.6-alpine'
+    restart: always
+    environment:
+      POSTGRES_USER: ${PELLETS_PGUSER}
+      POSTGRES_PASSWORD: ${PELLETS_PGPASSWORD}
+      POSTGRES_DB: ${PELLETS_PGDATABASE}
+    volumes:
+      - ./postgres-prod-data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+
+  pellets_prod_crawler:
+    build:
+      dockerfile: Dockerfile
+      context: ./crawler
+    restart: always
+    depends_on:
+      - pellets_prod_database_server
+    links:
+      - pellets_prod_database_server
+    volumes:
+      - ./crawler:/app
+    environment:
+      - PGUSER=${PELLETS_PGUSER}
+      - PGHOST=pellets_prod_database_server
+      - PGDATABASE=${PELLETS_PGDATABASE}
+      - PGPASSWORD=${PELLETS_PGPASSWORD}
+      - PGPORT=5432
+
+  pellets_prod_api:
+    build:
+      dockerfile: Dockerfile
+      context: ./api
+    restart: always
+    depends_on:
+      - pellets_prod_database_server
+    volumes:
+      - /app/assets/node_modules
+      - ./api:/app
+    ports:
+      - "4000:4000"
+    environment:
+      - PGUSER=${PELLETS_PGUSER}
+      - PGHOST=pellets_prod_database_server
+      - PGDATABASE=${PELLETS_PGDATABASE}
+      - PGPASSWORD=${PELLETS_PGPASSWORD}
+      - PGPORT=5432
+      - PELLETS_URL=${PELLETS_URL}
+      - PELLETS_PORT=4000
+
+  pellets_prod_front:
+    build:
+      dockerfile: Dockerfile
+      context: ./front
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - API_URL=http://localhost:4000/
+    volumes:
+      - /app/node_modules
+      - ./front:/app
+  
+  pellets_prod_nginx:
+    restart: always
+    depends_on:
+      - pellets_prod_database_server
+      - pellets_prod_api
+      - pellets_prod_front
+    build:
+      dockerfile: Dockerfile
+      context: ./nginx
+    ports:
+      - "3050:80"
+
+volumes:
+  prod-pellets-db:
+    driver: local

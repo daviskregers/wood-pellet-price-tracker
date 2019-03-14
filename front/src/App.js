@@ -6,13 +6,13 @@ import {
 } from 'recharts';
 import axios from 'axios';
 import {Table} from 'react-materialize';
+import moment from 'moment'
 
 class App extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      api_url: 'http://localhost:4000',
       aggregations: [],
       prices: [],
     };
@@ -20,24 +20,34 @@ class App extends Component {
 
   componentDidMount() {
 
-    axios.get( this.state.api_url + `/api/prices`)
+    axios.get( `/api/prices`)
       .then(res => {
-        const aggregations = res.data.data.aggregations;
-        const prices = res.data.data.prices;
+        const prices = res.data.data;
 
         this.setState({
-          aggregations: aggregations,
           prices: prices
         });
 
       })
+
+      axios.get('/api/chart').then( res => {
+        
+        const aggregations = res.data.data;
+        this.setState({
+          aggregations: aggregations
+        });
+
+      })
+
   }
 
   render() {
     return (
       <div className="App">
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
+          <a href="/">
+            <img src={logo} className="App-logo" alt="logo" />
+          </a>
           <h1>Wood pellet price tracker</h1>
           <p>
             uses <a href="https://www.ss.com/lv/production-work/firewood/granules/" target="_blank" rel="noopener noreferrer">SS.com</a> adverts to track price changes.
@@ -56,7 +66,13 @@ class App extends Component {
               }}
             >
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="date" />
+              <XAxis 
+                dataKey="date"
+                domain = {['auto', 'auto']}
+                name = 'Time'
+                tickFormatter={ (timestring => moment(timestring * 1000) ) }
+                type = 'number'
+              />
               <YAxis />
               <Tooltip />
               <Legend />
