@@ -12,8 +12,8 @@ config :logger, level: :warn
 
 # Configure your database
 config :api, Api.Repo,
-  username: {:system, "PELLETS_PGUSER", ""},
-  password: {:system, "PELLETS_PGPASSWORD", ""},
-  database: {:system, "PELLETS_PGDATABASE", ""},
-  hostname: {:system, "PELLETS_PGHOST", ""},
+  username: {:system, "PGUSER", ""},
+  password: {:system, "PGPASSWORD", ""},
+  database: {:system, "PGDATABASE", ""},
+  hostname: {:system, "PGHOST", ""},
   pool_size: 15

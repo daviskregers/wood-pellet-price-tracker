@@ -69,10 +69,3 @@ config :logger, level: :info
 # Finally import the config/prod.secret.exs which should be versioned
 # separately.
 import_config "prod.secret.exs"
-
-config :api, Api.Repo,
-  username: {:system, "PELLETS_PGUSER", ""},
-  password: {:system, "PELLETS_PGPASSWORD", ""},
-  database: {:system, "PELLETS_PGDATABASE", ""},
-  hostname: {:system, "PELLETS_PGHOST", ""},
-  pool_size: 15

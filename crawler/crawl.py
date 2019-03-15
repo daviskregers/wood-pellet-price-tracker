@@ -86,7 +86,7 @@ def crawl():
 
     for item in items:
         try:
-            cur.execute('INSERT INTO prices (title, url, price, date) VALUES (%s, %s, %s, %s)', (item['title'], item['link'], item['price'], time_now))
+            cur.execute('INSERT INTO prices (title, url, price, date, inserted_at, updated_at) VALUES (%s, %s, %s, %s, NOW(), NOW())', (item['title'], item['link'], item['price'], time_now))
         except (Exception) as error:
             print(error)
 
@@ -104,7 +104,7 @@ def crawl():
 def job():
     crawl()
 
-schedule.every(1).hours.do(job)
+schedule.every(4).hours.do(job)
 
 while True:
     schedule.run_pending()
