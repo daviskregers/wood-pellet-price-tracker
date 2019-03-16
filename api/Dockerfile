@@ -15,7 +15,7 @@ RUN cd /app && \
     mix local.hex --force && \
     mix local.rebar --force && \
     mix hex.info && \
-    mix deps.get --only prod
+    mix deps.get
 
 EXPOSE 4000
 
