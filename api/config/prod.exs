@@ -68,4 +68,15 @@ config :logger, level: :info
 
 # Finally import the config/prod.secret.exs which should be versioned
 # separately.
-import_config "prod.secret.exs"
+
+config :api, ApiWeb.Endpoint,
+  secret_key_base: System.get_env("PELLETS_KEY"),
+
+config :api, Api.Repo,
+  username: System.get_env("PGUSER"),
+  password: System.get_env("PGPASSWORD"),
+  database: System.get_env("PGDATABASE"),
+  hostname: System.get_env("PGHOST"),
+  pool_size: 10
+
+#import_config "prod.secret.exs"
