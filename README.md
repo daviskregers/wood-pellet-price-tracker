@@ -2,6 +2,8 @@
 
 An app to track average price of wood pellets on [https://www.ss.com/lv/production-work/firewood/granules/](ss.com) advertisements.
 
+Demo available at: [https://pellets.deiveris.lv](pellets.devieris.lv].
+
 ## App uses:
 - PostgreSQL database
 - Python crawler
