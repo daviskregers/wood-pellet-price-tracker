@@ -70,9 +70,9 @@ config :logger, level: :info
 # separately.
 
 config :api, ApiWeb.Endpoint,
-  secret_key_base: System.get_env("PELLETS_KEY"),
+  secret_key_base: System.get_env("PELLETS_KEY")
 
-config :api, Api.Repo,
+config :api, ApiWeb.Repo,
   username: System.get_env("PGUSER"),
   password: System.get_env("PGPASSWORD"),
   database: System.get_env("PGDATABASE"),
