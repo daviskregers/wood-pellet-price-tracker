@@ -1,5 +1,7 @@
 # Wood pelet price tracker
 
+**This project has been abandoned and migrated to grafana: https://github.com/daviskregers/wood-pellet-price-tracker-grafana**
+
 An app to track average price of wood pellets on [https://www.ss.com/lv/production-work/firewood/granules/](ss.com) advertisements.
 
 Demo available at: [pellets.deiveris.lv](https://pellets.deiveris.lv).
